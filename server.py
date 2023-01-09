@@ -3,6 +3,7 @@ from flask_cors import CORS
 from database_conn import *
 from user_accounts import * 
 
+
 app = Flask(__name__)
 CORS(app, origins='http://localhost:3000')
 
@@ -29,4 +30,4 @@ def gather_all_user_details():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0', port=get_port() )

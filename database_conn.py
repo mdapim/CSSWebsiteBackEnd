@@ -8,7 +8,10 @@ PASS = os.getenv('PASS')
 HOST = os.getenv('HOST')
 USER = os.getenv('USER')
 DBNAME = os.getenv('DBNAME')
-PORT = os.getenv('PORT')
+
+def get_port():
+    port = os.environ['PORT']
+    return port
 
 def get_db_user_connection():
     try:
