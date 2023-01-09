@@ -5,7 +5,7 @@ from user_accounts import *
 
 
 app = Flask(__name__)
-CORS(app, origins='http://localhost:3000')
+CORS(app, origins='https://csswebsitebackend-production.up.railway.app')
 
 @app.route('/create_user', methods=['POST'])
 def creating_user():
