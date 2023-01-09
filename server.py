@@ -14,7 +14,8 @@ def creating_user():
 
 @app.route('/find_user', methods=['POST', 'GET'])
 def finding_user():
-    data = request.json()
+    data = request.json
+    print(data)
     return locate_user_data(data)
 
 
