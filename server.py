@@ -28,12 +28,14 @@ def gather_all_user_details():
 
 @app.route('/forum_post', methods=['GET','POST', 'PATCH'])
 def forum_actions():
-    data = request.json
+    
     if(request.method == 'GET'):
         return get_posts()
     if(request.method == 'POST'):
+        data = request.json
         return post_item(data)
     elif(request.method == 'PATCH'):
+        data = request.json
         edit_post(data)
 
 @app.route('/forum_comment', methods=['POST', 'PATCH'])
@@ -58,4 +60,4 @@ def voting_actions():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=get_port()) 
+    app.run(debug=True,host='0.0.0.0') #port=get_port()
