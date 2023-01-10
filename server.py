@@ -5,7 +5,7 @@ from user_accounts import *
 
 
 app = Flask(__name__)
-CORS(app, origins=['https://lucky-madeleine-7ddeef.netlify.app/', 'http://localhost:3000'])
+CORS(app, origins=['https://lucky-madeleine-7ddeef.netlify.app', 'http://localhost:3000'])
 
 @app.route('/create_user', methods=['POST'])
 def creating_user():
