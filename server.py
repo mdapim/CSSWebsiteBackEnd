@@ -2,6 +2,7 @@ from flask import Flask, current_app, jsonify, request, json
 from flask_cors import CORS
 from database_conn import *
 from user_accounts import * 
+from forums_api import *
 
 
 app = Flask(__name__)
@@ -24,10 +25,37 @@ def finding_user():
 def gather_all_user_details():
     return get_all_user_info()
 
+
+@app.route('/forum_post', methods=['GET','POST', 'PATCH'])
+def forum_actions():
+    data = request.json
+    if(request.method == 'GET'):
+        return get_posts()
+    if(request.method == 'POST'):
+        return post_item(data)
+    elif(request.method == 'PATCH'):
+        edit_post(data)
+
+@app.route('/forum_comment', methods=['POST', 'PATCH'])
+def comments_actions():
+    data = request.json
+    if(request.method == 'POST'):
+        add_comment(data)
+    elif(request.method == 'PATCH'):
+        edit_comment(data)
+
+@app.route('/forum_vote', methods=['POST'])
+def voting_actions():
+    data = request.json
+    if(data[0] == 'upvote'):
+        upvote_post(data)
+    elif(data[0] == 'downvote'):
+        downvote_post(data)
+
  
 
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port = get_port() )
+    app.run(debug=True,host='0.0.0.0', port=get_port()) 
