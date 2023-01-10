@@ -11,8 +11,9 @@ def create_new_user(data): #handle empty input
     if(data[0]['name']=='' or data[0]['password']==''):
         return format_response(400, 'No inputs have been given')
     all_user_table_info = db_select(connection_to_db, 'select * from user_table')
+    
     try:
-        if not any(dictionary.get('name') == data[0]['name'] and compare_hashed_passwords(data[0]['password'], dictionary.get('salt'), dictionary.get('password')) for dictionary in all_user_table_info):
+        if not any([dictionary.get('name') == data[0]['name'] and compare_hashed_passwords(data[0]['password'], dictionary.get('salt'), dictionary.get('password')) for dictionary in all_user_table_info]):
             hashed_result = (create_hash_password(data[0]['password']))
             send = db_select(connection_to_db, 'insert into user_table (name, password) values (%s, %s) returning 1', ((data[0]['name']),(hashed_result[0])))
             return format_response(200, 'user created')
