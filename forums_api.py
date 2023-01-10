@@ -4,13 +4,14 @@ from user_accounts import connection_to_db, format_response
 
 def get_posts():
     try:
-        all_posts = db_select(connection_to_db, "select posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id group by posts.id order by posts.date_created desc;")
+        all_posts = db_select(connection_to_db, "select max(username) as username, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
         return jsonify(all_posts), 200
     except:
         return format_response(500, 'error adding response in post_item')
 
 
-def post_item(data):
+def post_item(json_data):
+    data = json_data
     if(data[0]['title'] and data[0]['description'] and data[0]['user_id']):
         try:
             params = (data[0]['title'],data[0]['description'], data[0]['user_id'])
@@ -22,7 +23,8 @@ def post_item(data):
         return format_response(400, 'One or more of the input fields are invalid')
 
 
-def edit_post(data):
+def edit_post(json_data):
+    data = json_data
     if(data[0]['title'] and data[0]['description'] and data[0]['post_id']):
         params = (data[0]['title'], data[0]['description'], data[0]['post_id'])
         check_for_post = db_select(connection_to_db,"select * from posts where id = %s", (data[0]['post_id'],))
