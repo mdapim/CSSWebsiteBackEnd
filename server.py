@@ -3,6 +3,7 @@ from flask_cors import CORS
 from database_conn import *
 from user_accounts import * 
 from forums_api import *
+from guides_api import *
 
 
 app = Flask(__name__)
@@ -61,10 +62,18 @@ def voting_actions():
 def getting_all_comment():
     return get_all_comments()
 
+
+@app.route('/guides_links', methods=['GET','POST'])
+def add_link_to_resources():
+    if(request.method == 'GET'):
+        return get_resources()
+    if(request.method == 'POST'):
+        data = request.json
+        return add_resource(data)
  
 
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=get_port())
+    app.run(debug=True,host='0.0.0.0', port=get_port()) 
