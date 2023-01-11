@@ -28,7 +28,6 @@ def gather_all_user_details():
 
 @app.route('/forum_post', methods=['GET','POST','PATCH'])
 def forum_actions():
-    
     if(request.method == 'GET'):
         return get_posts()
     elif(request.method == 'POST'):
@@ -61,4 +60,4 @@ def voting_actions():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=get_port()) 
+    app.run(debug=True,host='0.0.0.0')# port=get_port()

@@ -52,8 +52,18 @@ def add_comment(json_data):
     except:
         return format_response(500, 'error adding comment')
 
-def edit_comment():
-    pass
+def edit_comment(json_data):
+    data = json_data
+    params = (data[0]['description'], data[0]["comment_id"])
+    check_item_result = check_item_exists('select * from comments where id = %s', (data[0]["comment_id"],))
+    if(check_item_result ==  True):
+        try:
+            edit_comment = db_select(connection_to_db, "update comments set description=%s, date_updated=current_timestamp where id =%s returning 1", params)
+            return format_response(200, 'comment updated successfully'), 200
+        except:
+            return format_response(500, 'failed to update comment')
+    else:
+        return check_item_result
 
 def vote_on_post(data):
     params = (data[0]['post_id'],)
@@ -66,3 +76,10 @@ def vote_on_post(data):
             return format_response(200, 'success post was down voted successfully'), 200
     except:
         return format_response(500, 'unable to add vote to post')
+
+def check_item_exists(query, param):
+    check_for_item = db_select(connection_to_db,query, param)
+    if(len(check_for_item) > 0):
+        return True
+    else:
+        return format_response(404, 'item could not be found in database')
