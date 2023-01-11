@@ -2,6 +2,9 @@ from flask import jsonify
 from database_conn import db_select, get_db_user_connection
 from user_accounts import connection_to_db, format_response
 
+def get_all_comments():
+    return db_select(connection_to_db, 'select * from comments')
+
 def get_posts():
     try:
         all_posts = db_select(connection_to_db, "select max(username) as username, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
@@ -34,6 +37,13 @@ def edit_post(json_data):
         else:
             return format_response(404, 'No post was found relating to ID given'), 404
 
+def delete_post(json_data):
+    data = json_data
+    params = (data[0]['post_id'],data[0]['post_id'])
+    delete_comments = db_select(connection_to_db, 'delete from comments where post_id = %s and exists(select * from comments where post_id = %s) returning 1', params)
+    delete_item = db_select(connection_to_db, 'delete from posts where id = %s and exists(select * from posts where id = %s) returning 1', params)
+    return delete_item
+
 def get_comments(data):
     params = (data[0]['post_id'],)
     try:
@@ -54,16 +64,23 @@ def add_comment(json_data):
 
 def edit_comment(json_data):
     data = json_data
-    params = (data[0]['description'], data[0]["comment_id"])
+    params = (data[0]['description'], data[0]["comment_id"], data[0]["comment_id"])
     check_item_result = check_item_exists('select * from comments where id = %s', (data[0]["comment_id"],))
     if(check_item_result ==  True):
         try:
-            edit_comment = db_select(connection_to_db, "update comments set description=%s, date_updated=current_timestamp where id =%s returning 1", params)
-            return format_response(200, 'comment updated successfully'), 200
+            edit_comment = db_select(connection_to_db, "update comments set description=%s, date_updated=current_timestamp where id =%s and exists(select * from comments where id = %s) returning 1", params)
+            return edit_comment
         except:
             return format_response(500, 'failed to update comment')
     else:
         return check_item_result
+
+def delete_comment(json_data):
+    data = json_data
+    params1 = (data[0]['comment_id'], data[0]['user_id'], data[0]['user_type'])
+    params = (data[0]['comment_id'],data[0]['comment_id'])
+    delete_item = db_select(connection_to_db, 'delete from comments where id = %s and exists(select * from comments where id = %s) returning 1', params)
+    return delete_item
 
 def vote_on_post(data):
     params = (data[0]['post_id'],)

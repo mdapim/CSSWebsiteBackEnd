@@ -26,7 +26,7 @@ def gather_all_user_details():
     return get_all_user_info()
 
 
-@app.route('/forum_post', methods=['GET','POST','PATCH'])
+@app.route('/forum_post', methods=['GET','POST','PATCH', 'DELETE'])
 def forum_actions():
     if(request.method == 'GET'):
         return get_posts()
@@ -34,13 +34,17 @@ def forum_actions():
         return post_item(request.json)
     elif(request.method == 'PATCH'):
         return edit_post(request.json)
+    elif(request.method == 'DELETE'):
+        return delete_post(request.json)
 
-@app.route('/forum_comment', methods=['POST', 'PATCH'])
+@app.route('/forum_comment', methods=['POST', 'PATCH', 'DELETE'])
 def comments_actions():
     if(request.method == 'POST'):
         return add_comment(request.json)
     elif(request.method == 'PATCH'):
         return edit_comment(request.json)
+    elif(request.method == 'DELETE'):
+        return delete_comment(request.json)
 
 @app.route('/get_comments', methods=['POST'])
 def get_comment_by_id():
@@ -53,6 +57,9 @@ def voting_actions():
     data = request.json
     return vote_on_post(data)
 
+@app.route('/get_all')
+def get_comments():
+    return get_all_comments()
 
  
 
