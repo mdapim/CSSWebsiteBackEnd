@@ -38,19 +38,22 @@ def forum_actions():
 
 @app.route('/forum_comment', methods=['POST', 'PATCH'])
 def comments_actions():
-    data = request.json
     if(request.method == 'POST'):
-        add_comment(data)
+        return add_comment(request.json)
     elif(request.method == 'PATCH'):
-        edit_comment(data)
+        return edit_comment(request.json)
+
+@app.route('/get_comments', methods=['POST'])
+def get_comment_by_id():
+    if(request.method == 'POST'):
+        data = request.json
+        return get_comments(data)
 
 @app.route('/forum_vote', methods=['POST'])
 def voting_actions():
     data = request.json
-    if(data[0] == 'upvote'):
-        upvote_post(data)
-    elif(data[0] == 'downvote'):
-        downvote_post(data)
+    return vote_on_post(data)
+
 
  
 
@@ -58,4 +61,4 @@ def voting_actions():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=get_port())  
+    app.run(debug=True,host='0.0.0.0', port=get_port()) 

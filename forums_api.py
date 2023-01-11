@@ -7,7 +7,7 @@ def get_posts():
         all_posts = db_select(connection_to_db, "select max(username) as username, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
         return jsonify(all_posts), 200
     except:
-        return format_response(500, 'error adding response in post_item')
+        return format_response(500, 'error retrieving posts')
 
 
 def post_item(json_data):
@@ -34,15 +34,35 @@ def edit_post(json_data):
         else:
             return format_response(404, 'No post was found relating to ID given'), 404
 
+def get_comments(data):
+    params = (data[0]['post_id'],)
+    try:
+        get_comment_by_id = db_select(connection_to_db, "select comments.id, post_id, user_id, description, date_created, date_updated, user_table.username from comments join user_table on user_table.id = user_id where post_id = %s", params)
+        return get_comment_by_id, 200
+    except:
+        return format_response(500, 'error retrieving comments')
+    
 
-def add_comment():
-    pass
+def add_comment(json_data):
+    data = json_data
+    params = (data[0]['description'], data[0]['post_id'], data[0]['user_id'])
+    try:
+        add_comment_to_table = db_select(connection_to_db, "insert into comments (description, post_id, user_id, date_created, date_updated) values (%s,%s,%s, current_timestamp, current_timestamp) returning 1", params)
+        return format_response(200, 'comment has been added successfully'),200
+    except:
+        return format_response(500, 'error adding comment')
 
 def edit_comment():
     pass
 
-def upvote_post():
-    pass
-
-def downvote_post():
-    pass
+def vote_on_post(data):
+    params = (data[0]['post_id'],)
+    try:
+        if(data[0]['vote'] == 'upvote'):
+            upvote_post = db_select(connection_to_db, "update posts set likes = likes + 1 where id = %s returning 1", params)
+            return format_response(200, 'success post was up voted successfully'), 200
+        elif(data[0]['vote'] == 'downvote'):
+            upvote_post = db_select(connection_to_db, "update posts set dislikes = dislikes + 1 where id = %s returning 1", params)
+            return format_response(200, 'success post was down voted successfully'), 200
+    except:
+        return format_response(500, 'unable to add vote to post')
