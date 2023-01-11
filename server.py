@@ -58,7 +58,7 @@ def voting_actions():
     return vote_on_post(data)
 
 @app.route('/get_all')
-def get_comments():
+def getting_all_comment():
     return get_all_comments()
 
  
@@ -67,4 +67,4 @@ def get_comments():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')# port=get_port()
+    app.run(debug=True,host='0.0.0.0', port=get_port())
