@@ -30,6 +30,7 @@ def db_select(conn ,query, parameters=()):
                 conn.commit()
                 return data            
             except:
+                conn.reset()
                 return "Error executing query."
     else:
         return "No connection"
