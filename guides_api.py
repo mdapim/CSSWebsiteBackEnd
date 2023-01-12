@@ -1,8 +1,8 @@
 from database_conn import db_select, get_db_user_connection
 from user_accounts import connection_to_db, format_response
-from forums_api import check_item_exists, validate_returned_query
+from forums_api import validate_returned_query
 
-def get_resources(): #done
+def get_resources(): 
     try:
         category_list = db_select(connection_to_db, 'select * from categories')
         validate_category_list = validate_returned_query(category_list, 'error retrieving categories')
@@ -24,7 +24,7 @@ def get_resources(): #done
     except:
         return format_response(500, 'error retrieving resources'),500
 
-def add_resource(data): #done
+def add_resource(data): 
     try:
         if(data[0]['user_type'] != '1'):
             return format_response(401, "unauthorized access, user doesn't have required access rights ")
@@ -38,7 +38,7 @@ def add_resource(data): #done
             return validate_category_id
         else:
             params = (data[0]['resource_link'], data[0]['resource_description'], confirm_category_id[0]['category_id'])
-            add_resource = db_select(connection_to_db, "insert into resources (resource_link, resource_description, resource_category_id) values (%s,%s,%s) returning 'added'", params)
+            add_resource = db_select(connection_to_db, "insert into resources (resource_link, resource_description, resource_category_id) values (%s,%s,%s) returning 'successfully added resource'", params)
             return validate_returned_query(add_resource, 'error adding resource into resource list')
     except:
         return format_response(500, 'error adding resource into resource list')
