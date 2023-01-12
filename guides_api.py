@@ -11,9 +11,9 @@ def get_resources():
         validate_resource_list = validate_returned_query(resource_list,'error retrieving resources')
 
         if (validate_category_list[1] != 500 and validate_resource_list[1] != 500):
-            mapped_category_list = []
+            mapped_category_list = {}
             for i in category_list:
-                mapped_category_list.append({i["category_id"]:i["category_name"]})
+                mapped_category_list[i["category_id"]] = i["category_name"]
 
             return [mapped_category_list, resource_list], 200
 
