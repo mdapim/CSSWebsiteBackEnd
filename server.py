@@ -76,4 +76,4 @@ def add_link_to_resources():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=get_port()) 
+    app.run(debug=True,host='0.0.0.0') #port=get_port()
