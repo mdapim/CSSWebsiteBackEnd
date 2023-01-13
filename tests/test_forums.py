@@ -104,6 +104,29 @@ def test_delete_comment_user():
         print(all_comments)
         assert len(all_comments)==0
         assert response.json()[0].get('?column?')!=None
+def test_upvote_downvote():
+    last_post = requests.get(base_url+'/forum_post').json()[0]
+    data_upvote = json.dumps([{'vote':'upvote','user_id':5,'post_id':last_post['id']}])
+    data_downvote = json.dumps([{'vote':'downvote','user_id':5,'post_id':last_post['id']}])
+    response_up = requests.post(base_url+'/forum_vote',data=data_upvote,headers={'Content-Type':'application/json'})
+    response_down = requests.post(base_url+'/forum_vote',data=data_downvote,headers={'Content-Type':'application/json'})
+    print(response_up)
+    last_post_updated = requests.get(base_url+'/forum_post').json()[0]
+    print(last_post_updated)
+    print(last_post)
+    assert last_post_updated['likes']==last_post['likes']+1
+    assert last_post_updated['dislikes']==last_post['dislikes']+1
+    pass
+def test_post_deleted():
+        last_post = requests.get(base_url+'/forum_post').json()[0]
+        item_to_delete = json.dumps([{'user_id':last_post['user_id'],'post_id':last_post['id'],'user_type':last_post['user_id']}])
+        response = requests.delete(base_url+'/forum_post',
+        data=item_to_delete,
+        headers={"Content-type": "application/json"})
+        print(response.json()[0])
+        assert response.json()[0].get('?column?')=='post has been deleted successfully'
+
+
 def test_delete_any_comment_admin():
     test_item_post()
     test_add_comment()
@@ -120,13 +143,3 @@ def test_delete_any_comment_admin():
     
 
     pass
-def test_post_deleted():
-        last_post = requests.get(base_url+'/forum_post').json()[0]
-        item_to_delete = json.dumps([{'user_id':last_post['user_id'],'post_id':last_post['id'],'user_type':last_post['user_id']}])
-        response = requests.delete(base_url+'/forum_post',
-        data=item_to_delete,
-        headers={"Content-type": "application/json"})
-        print(response.json()[0])
-        assert response.json()[0].get('?column?')=='post has been deleted successfully'
-
-
