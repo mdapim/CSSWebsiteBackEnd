@@ -31,7 +31,6 @@ server.py:
 
 
 def test_get_all_posts(): #will fail without a single post
-
     response = requests.get(base_url+'/forum_post')
     assert response.status_code==200
     first_response = response.json()[0]
@@ -41,7 +40,6 @@ def test_get_all_posts(): #will fail without a single post
 
 def test_item_post(): #will fail without a user existing of id=1
     item_to_post = json.dumps([{'title':'TESTING_BACKEND','description':'TEST_DESCRIP.','user_id':'1'}])
-    
     response = requests.post(base_url+'/forum_post',
         item_to_post,
         headers={"Content-type": "application/json"}
@@ -49,7 +47,6 @@ def test_item_post(): #will fail without a user existing of id=1
     assert response.status_code==200
     assert response.json()[0]['?column?'].startswith('success')
 
-    pass
 def test_item_post_no_user():
     item_to_post = json.dumps([{'title':'TESTING_BACKEND','description':'TEST_DESCRIP.'}])
     response = requests.post(base_url+'/forum_post',
@@ -90,15 +87,16 @@ def test_edit_comment():
     assert edited_comments.get('description')=='TEST_COMMENT_EDITED'
 
 def test_delete_comment_user():
-        last_post = requests.get(base_url+'/forum_post').json()[0]
-        all_comments = requests.post(base_url+'/get_comments',data=json.dumps([{'post_id':last_post['id']}]),headers={'Content-Type':'application/json'}).json()[0]
-        comment_id = all_comments['id']
-        user_id = all_comments['user_id']
-        data = json.dumps([{'comment_id':comment_id,'user_id':user_id,'user_type':2}])
-        response = requests.delete(base_url+'/forum_comment',data=data,headers={'Content-Type':'application/json'})
-        all_comments = requests.post(base_url+'/get_comments',data=json.dumps([{'post_id':last_post['id']}]),headers={'Content-Type':'application/json'}).json()
-        assert len(all_comments)==0
-        assert response.json()[0].get('?column?')!=None
+    last_post = requests.get(base_url+'/forum_post').json()[0]
+    all_comments = requests.post(base_url+'/get_comments',data=json.dumps([{'post_id':last_post['id']}]),headers={'Content-Type':'application/json'}).json()[0]
+    comment_id = all_comments['id']
+    user_id = all_comments['user_id']
+    data = json.dumps([{'comment_id':comment_id,'user_id':user_id,'user_type':2}])
+    response = requests.delete(base_url+'/forum_comment',data=data,headers={'Content-Type':'application/json'})
+    all_comments = requests.post(base_url+'/get_comments',data=json.dumps([{'post_id':last_post['id']}]),headers={'Content-Type':'application/json'}).json()
+    assert len(all_comments)==0
+    assert response.json()[0].get('?column?')!=None
+    
 def test_upvote_downvote():
     last_post = requests.get(base_url+'/forum_post').json()[0]
     data_upvote = json.dumps([{'vote':'upvote','user_id':5,'post_id':last_post['id']}])
@@ -116,7 +114,6 @@ def test_post_deleted():
     data=item_to_delete,
     headers={"Content-type": "application/json"})
     assert response.json()[0].get('?column?')=='post has been deleted successfully'
-
 
 def test_delete_any_comment_admin():
     test_item_post()
