@@ -3,11 +3,11 @@ from database_conn import db_select, get_db_user_connection
 from user_accounts import connection_to_db, format_response
 
 def get_all_comments(): 
-    all_comments = db_select(connection_to_db, 'select date_created, date_updated, description, comments.id, post_id, user_id, username from comments join user_table on user_id = user_table.id order by id desc')
+    all_comments = db_select(connection_to_db, 'select date_created, date_updated, description, comments.id, post_id, user_id, username,profile_picture from comments join user_table on user_id = user_table.id order by id desc')
     return validate_returned_query(all_comments, 'error retrieving comments')
 
 def get_posts(): 
-        all_posts = db_select(connection_to_db, "select max(username) as username, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
+        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
         return validate_returned_query(all_posts, 'error retrieving posts')
 
 

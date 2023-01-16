@@ -6,6 +6,7 @@ import bcrypt
 from database_conn import db_select, get_db_user_connection
 
 connection_to_db = get_db_user_connection()
+PROFILE_PICTURE_ENDPOINT ="https://api.dicebear.com/5.x/bottts/svg?seed="
 
 def create_new_user(data): #handle empty input
     if(data[0]['name']=='' or data[0]['password']==''):
@@ -15,7 +16,8 @@ def create_new_user(data): #handle empty input
     try:
         if not any([dictionary.get('username') == data[0]['name'] and compare_hashed_passwords(data[0]['password'], dictionary.get('salt'), dictionary.get('password')) for dictionary in all_user_table_info]):
                 hashed_result = (create_hash_password(data[0]['password']))
-                send = db_select(connection_to_db, 'insert into user_table (username, password) values (%s, %s) returning 1', ((data[0]['name']),(hashed_result[0])))
+                profile_picture = PROFILE_PICTURE_ENDPOINT+data[0]['name']
+                send = db_select(connection_to_db, 'insert into user_table (username, password,profile_picture) values (%s, %s,%s) returning 1', (data[0]['name'],hashed_result[0],profile_picture))
                 return format_response(200, 'user created')
         else:
                 return format_response(400,'user is already in database')
@@ -28,7 +30,7 @@ def locate_user_data(data):
         all_user_table_info = db_select(connection_to_db, 'select * from user_table')
         for user in all_user_table_info:
             if(user['username'] == data[0]['name'] and compare_hashed_passwords(data[0]['password'], user.get('password'))):
-                selected_user = db_select(connection_to_db, 'select id, type_id, username from user_table where username=%s and password=%s', ((user['username']),(user['password'])))
+                selected_user = db_select(connection_to_db, 'select id, type_id, username,profile_picture from user_table where username=%s and password=%s', (user['username'],user['password']))
                 return jsonify(selected_user), 200
         return format_response(404,'user was not found (locate_user_data)'), 404
     except:
