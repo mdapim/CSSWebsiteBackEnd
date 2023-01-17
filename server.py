@@ -8,7 +8,7 @@ from sessions_api import *
 from datetime import datetime,timedelta
 
 app = Flask(__name__)
-CORS(app, origins=['https://lucky-madeleine-7ddeef.netlify.app', 'https://idyllic-rabanadas-35e31a.netlify.app','http://localhost:3000'])
+CORS(app, origins=['https://lucky-madeleine-7ddeef.netlify.app', 'https://idyllic-rabanadas-35e31a.netlify.app','http://localhost:3000'],supports_credentials=True)
 
 @app.route('/', methods=['GET'])
 def home():
