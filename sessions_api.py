@@ -13,7 +13,7 @@ def get_sessions(user_uuid):
         #match
         print(sql_response['user_id'])
         user_details = db_select(connection_to_db,find_user_query,(sql_response['user_id'],))[0]
-        user_info = [{'id':user_details['id'],'name':user_details['username'],'user_type':user_details['type_id'],'profile_picture':user_details['profile_picture']}]
+        user_info = [{'id':user_details['id'],'username':user_details['username'],'user_type':user_details['type_id'],'profile_picture':user_details['profile_picture']}]
         return user_info
     else:
         return 'TIMEDOUT'
