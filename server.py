@@ -31,7 +31,7 @@ def finding_user():
     located_user = locate_user_data(data)
     uuid = create_session(located_user[0])
     jsonified_located_user = jsonify(located_user)
-    expiry_date = datetime.utcnow()+timedelta(days=3)
+    expiry_date = datetime.utcnow()+timedelta(days=1)
     expiry_date = expiry_date.strftime("%a, %d %b %Y %H:%M:%S GMT")
     jsonified_located_user.set_cookie('s5s__uuid',uuid,expires=expiry_date)
     return jsonified_located_user
