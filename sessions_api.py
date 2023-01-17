@@ -18,7 +18,6 @@ def get_sessions(user_uuid):
     else:
         return 'TIMEDOUT'
 def create_session(data):
-    # cookies = request.cookies.get('s5s__uuid')
     create_session_query = 'INSERT INTO sessions (uuid,created_at,user_id) VALUES (%s,CURRENT_TIMESTAMP,%s) RETURNING 1'
     user_uuid = str(uuid.uuid4())
     params = (user_uuid, int(data[0]['id']))
