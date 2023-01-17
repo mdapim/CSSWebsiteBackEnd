@@ -31,7 +31,7 @@ def locate_user_data(data):
         for user in all_user_table_info:
             if(user['username'] == data[0]['name'] and compare_hashed_passwords(data[0]['password'], user.get('password'))):
                 selected_user = db_select(connection_to_db, 'select id, type_id, username,profile_picture from user_table where username=%s and password=%s', (user['username'],user['password']))
-                return jsonify(selected_user), 200
+                return (selected_user), 200
         return format_response(404,'user was not found (locate_user_data)'), 404
     except:
         return format_response(500, 'Error Fetching User (locate_user_data)'), 500

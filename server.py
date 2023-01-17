@@ -4,10 +4,20 @@ from database_conn import *
 from user_accounts import * 
 from forums_api import *
 from guides_api import *
-
+from sessions_api import *
+from datetime import datetime,timedelta
 
 app = Flask(__name__)
 CORS(app, origins=['https://lucky-madeleine-7ddeef.netlify.app', 'https://idyllic-rabanadas-35e31a.netlify.app','http://localhost:3000'])
+
+@app.route('/', methods=['GET'])
+def home():
+    cookies = request.cookies.get('s5s__uuid')
+    if cookies:
+        user_data = get_sessions(cookies)
+        return jsonify(user_data),200
+    else:
+        return jsonify('NO COOKIES'),404
 
 @app.route('/create_user', methods=['POST'])
 def creating_user():
@@ -18,8 +28,13 @@ def creating_user():
 @app.route('/find_user', methods=['POST', 'GET'])
 def finding_user():
     data = request.json
-    print(data)
-    return locate_user_data(data)
+    located_user = locate_user_data(data)
+    uuid = create_session(located_user[0])
+    jsonified_located_user = jsonify(located_user)
+    expiry_date = datetime.utcnow()+timedelta(days=1)
+    expiry_date = expiry_date.strftime("%a, %d %b %Y %H:%M:%S GMT")
+    jsonified_located_user.set_cookie('s5s__uuid',uuid,expires=expiry_date)
+    return jsonified_located_user
 
 
 @app.route('/all_users_details', methods=['GET'])
