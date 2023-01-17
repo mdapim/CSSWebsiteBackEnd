@@ -7,16 +7,25 @@ def get_all_comments():
     return validate_returned_query(all_comments, 'error retrieving comments')
 
 def get_posts(): 
-        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, posts.id, title, posts.description, posts.user_id, likes, dislikes, code, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
+        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, max(forum_categories.description) as category ,posts.id, title, posts.description, posts.user_id, likes, dislikes, code, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id left join forum_categories on forum_categories.id = posts.forum_category_id group by posts.id order by posts.date_created desc;")
         return validate_returned_query(all_posts, 'error retrieving posts')
 
 
 def post_item(data): 
     try:
-        if(data[0]['title'] and data[0]['description'] and data[0]['user_id']):
-            params = (data[0]['title'],data[0]['description'], data[0]['user_id'], data[0]['code'])
-            insert_post_into_forum_table = db_select(connection_to_db, "insert into posts (title, description, user_id, date_created, date_updated, code) values (%s,%s,%s,current_timestamp, current_timestamp, %s) returning (id,'success')", params)
-            return validate_returned_query(insert_post_into_forum_table, 'error adding response in post_item')
+        if(data[0]['title'] and data[0]['description'] and data[0]['user_id'] and data[0]['category']):
+
+            confirm_category_id = db_select(connection_to_db,'select id from forum_categories where LOWER(description) = LOWER(%s) and exists(select * from forum_categories where LOWER(description)=LOWER(%s))', (data[0]['category'], data[0]['category']))
+            if(len(confirm_category_id) <= 0):
+                confirm_category_id = db_select(connection_to_db, 'insert into forum_categories (description) values (%s) returning id;', (data[0]['category'],))
+
+            validate_category_id = validate_returned_query(confirm_category_id,'error getting category id')
+            if(validate_category_id[1] == 500):
+                return validate_category_id
+            else:
+                params = (data[0]['title'],data[0]['description'], data[0]['user_id'], data[0]['code'], confirm_category_id[0]['id'])
+                insert_post_into_forum_table = db_select(connection_to_db, "insert into posts (title, description, user_id, date_created, date_updated, code, forum_category_id) values (%s,%s,%s,current_timestamp, current_timestamp, %s, %s) returning (id,'success')", params)
+                return validate_returned_query(insert_post_into_forum_table, 'error adding response in post_item')
 
         else:
             return format_response(400, 'One or more of the input fields are invalid'),400
