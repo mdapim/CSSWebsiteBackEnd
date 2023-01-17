@@ -7,15 +7,15 @@ def get_all_comments():
     return validate_returned_query(all_comments, 'error retrieving comments')
 
 def get_posts(): 
-        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
+        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, posts.id, title, posts.description, posts.user_id, likes, dislikes, code, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
         return validate_returned_query(all_posts, 'error retrieving posts')
 
 
 def post_item(data): 
     try:
         if(data[0]['title'] and data[0]['description'] and data[0]['user_id']):
-            params = (data[0]['title'],data[0]['description'], data[0]['user_id'])
-            insert_post_into_forum_table = db_select(connection_to_db, "insert into posts (title, description, user_id, date_created, date_updated) values (%s,%s,%s,current_timestamp, current_timestamp) returning (id,'success')", params)
+            params = (data[0]['title'],data[0]['description'], data[0]['user_id'], data[0]['code'])
+            insert_post_into_forum_table = db_select(connection_to_db, "insert into posts (title, description, user_id, date_created, date_updated, code) values (%s,%s,%s,current_timestamp, current_timestamp, %s) returning (id,'success')", params)
             return validate_returned_query(insert_post_into_forum_table, 'error adding response in post_item')
 
         else:
