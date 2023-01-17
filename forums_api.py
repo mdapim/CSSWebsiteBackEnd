@@ -7,7 +7,7 @@ def get_all_comments():
     return validate_returned_query(all_comments, 'error retrieving comments')
 
 def get_posts(): 
-        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, posts.id, title, posts.description, posts.user_id, likes, dislikes, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
+        all_posts = db_select(connection_to_db, "select max(username) as username,max(profile_picture) as profile_picture, posts.id, title, posts.description, posts.user_id, likes, dislikes, code, posts.date_created, posts.date_updated, count(comments.id) as comment from posts left join comments on posts.id = comments.post_id join user_table on posts.user_id = user_table.id group by posts.id order by posts.date_created desc")
         return validate_returned_query(all_posts, 'error retrieving posts')
 
 
