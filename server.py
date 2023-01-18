@@ -86,6 +86,11 @@ def add_link_to_resources():
     if(request.method == 'POST'):
         data = request.json
         return add_resource(data)
+
+@app.route('/add_click', methods=['POST'])
+def add_click_to_resource():
+    if(request.method == 'POST'):
+        return add_click(request.json)
  
 
 
