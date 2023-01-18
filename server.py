@@ -28,14 +28,14 @@ def creating_user():
 @app.route('/find_user', methods=['POST', 'GET'])
 def finding_user():
     data = request.json
-    located_user = locate_user_data(data)
+    located_user,status = locate_user_data(data)
     jsonified_located_user = jsonify(located_user)
-    if located_user[1]==200:
-        uuid = create_session(located_user[0])
+    if status==200:
+        uuid = create_session(located_user)
         expiry_date = datetime.utcnow()+timedelta(days=1)
         expiry_date = expiry_date.strftime("%a, %d %b %Y %H:%M:%S GMT")
         jsonified_located_user.set_cookie('s5s__uuid',uuid,expires=expiry_date,secure=True,samesite='None')
-    return jsonified_located_user
+    return jsonified_located_user,status
 
 
 @app.route('/all_users_details', methods=['GET'])
