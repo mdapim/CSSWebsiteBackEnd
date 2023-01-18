@@ -42,3 +42,18 @@ def add_resource(data):
             return validate_returned_query(add_resource, 'error adding resource into resource list')
     except:
         return format_response(500, 'error adding resource into resource list')
+
+def add_click(data):
+    params = (data[0]["resource_id"], data[0]['resource_id'])
+    try:
+        check_resource_exists = db_select(connection_to_db, 'select resource_id from resources where resource_id = %s and exists(select * from resources where resource_id=%s)', params)
+        validate_query_resource_exists = validate_returned_query(check_resource_exists, 'error resource id could not be located')
+
+        if(validate_query_resource_exists[1] == 500):
+            return format_response(404, 'resource was not found in table'), 404
+        else:
+            add_click_to_resource = db_select(connection_to_db, "update resources set click_count = click_count + 1 where resource_id = %s returning 'click has been counted'", (data[0]['resource_id'],))
+            return  validate_returned_query(add_click_to_resource, 'error adding clicks to resource')
+
+    except:
+        return format_response(500, 'error adding click count')
