@@ -9,7 +9,7 @@ connection_to_db = get_db_user_connection()
 PROFILE_PICTURE_ENDPOINT ="https://api.dicebear.com/5.x/bottts/svg?seed="
 
 def create_new_user(data): #handle empty input
-    if(data[0]['name']=='' or data[0]['password']==''):
+    if(data[0]['name']=='' or data[0]['password']=='' or str(data[0]['name']).isspace() or str(data[0]['password']).isspace()):
         return format_response(400, 'No inputs have been given')
     all_user_table_info = db_select(connection_to_db, 'select * from user_table')
     
