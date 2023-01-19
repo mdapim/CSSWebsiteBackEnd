@@ -4,10 +4,14 @@ import requests
 import json
 from flask import Flask,jsonify
 from database_conn import db_select, get_db_user_connection
+from string import ascii_lowercase
+from random import randrange
 app = Flask(__name__)
 base_url = "https://csswebsitebackend-production.up.railway.app/"
 
 
+def random_word() -> str:
+    return ascii_lowercase[randrange(len(ascii_lowercase))]
 
 connection_to_db = get_db_user_connection()
 def test_sign_up_user_already_in_database():
@@ -54,22 +58,20 @@ def test_sign_up_invalid_input_password():
 
 
 
-# def test_sign_up_successful():
-#     print(connection_to_db)
-#     delete_user = db_select(connection_to_db, 'delete from user_table where username=mikeel1 returning id', ((),))
-#     data = [{"name": "mikeel1",
-# "password":"12345"}]
-#     path = "/get_user"
-#     response = requests.post(url=base_url+"/create_user", headers={"Content-type": "application/json"},json= data)
-#     responseJson = json.loads(response.text)
-#     print(responseJson)
-#     print(delete_user)
-#     assert responseJson ==  [
-#     {
-#         "message": "user created",
-#         "status": 200
-#     }
-#     ]
+def test_sign_up_successful():
+    print(connection_to_db)
+    data = [{"name": str(random_word()),
+"password":"12345"}]
+    path = "/get_user"
+    response = requests.post(url=base_url+"/create_user", headers={"Content-type": "application/json"},json= data)
+    responseJson = json.loads(response.text)
+    print(responseJson)
+    assert responseJson ==  [
+    {
+        "message": "user created",
+        "status": 200
+    }
+    ]
     
     
 
