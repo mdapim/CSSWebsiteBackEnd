@@ -75,9 +75,17 @@ def test_sign_up_successful():
     
     
 
-def test_get_user_no_user_found():
+def test_get_user_no_user_found_username_incorrect():
     data = [{"name": "missingName",
 "password":"test4"}]
+    path = "/get_user"
+    response = requests.post(url=base_url+"find_user", headers={"Content-type": "application/json"},json= data)
+    responseJson = json.loads(response.text)
+    assert responseJson ==  [{'message': 'user was not found (locate_user_data)', 'status': 404}]
+
+def test_get_user_no_user_found_password_incorrect():
+    data = [{"name": "mikeel",
+"password":"missingpassword"}]
     path = "/get_user"
     response = requests.post(url=base_url+"find_user", headers={"Content-type": "application/json"},json= data)
     responseJson = json.loads(response.text)
