@@ -10,8 +10,6 @@ def get_sessions(user_uuid):
     find_user_query = 'SELECT id, type_id, username,profile_picture FROM user_table WHERE id=%s'
     sql_response = db_select(connection_to_db,search_matching_uuid,(user_uuid,))[0]
     if (type(sql_response)!=str):
-        #match
-        print(sql_response['user_id'])
         user_details = db_select(connection_to_db,find_user_query,(sql_response['user_id'],))
         return user_details
     else:
