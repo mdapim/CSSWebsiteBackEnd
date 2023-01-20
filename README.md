@@ -7,56 +7,60 @@ CheckOut Live running server: https://csswebsitebackend-production.up.railway.ap
 
 ## API EndPoints:
 
-**/create_user
-POST -> create new user in the user_tables
+**/create_user ||
+POST -> create new user in the user_tables ||
 data to send -> [{"name": " ", "password":" "}]**
 
-/find_user
-POST = -> find the user from the user_tables
-data to send -> [{"name": " ", "password":" "}]
+**/find_user ||
+POST = -> find the user from the user_tables ||
+data to send -> [{"name": " ", "password":" "}]**
 
-/forum_post
-GET -> gets all forum post
+**/forum_post**
 
-POST -> add a new post to posts table
-data to send -> [{"title":" ", "description":" ", "user_id":" ", "code":" ", "category":" "}]
+GET -> gets all forum post**
 
-EDIT -> update a row in posts table
-data to send -> [{"title":" ", "description":" ", "post_id":"", "user_id":" "}]
+**POST -> add a new post to posts table ||
+data to send -> [{"title":" ", "description":" ", "user_id":" ", "code":" ", "category":" "}]**
 
-DELETE -> delete a row in posts table (user type of 1 is an admin account)
-data to send -> [{"post_id":"", "user_id":"", "user_type":""}]
+**EDIT -> update a row in posts table ||
+data to send -> [{"title":" ", "description":" ", "post_id":"", "user_id":" "}]**
 
-/get_comments
-POST -> get comment by postid
-data to send -> [{"post_id": ""}]
+**DELETE -> delete a row in posts table (user type of 1 is an admin account) || 
+data to send -> [{"post_id":"", "user_id":"", "user_type":""}]**
 
-/get_all
-GET-> get all comments
+**/get_comments ||
+POST -> get comment by postid ||
+data to send -> [{"post_id": ""}]**
 
-/forum_comment
+**/get_all ||
+GET-> get all comments**
 
-POST -> add a new comment to comments table
-data to send -> [{"description":"", "post_id":"", "user_id":""}]
+**/forum_comment**
 
-EDIT -> update a row in comments table
-data to send -> [{"description":"", "comment_id":"", "user_id":""}]
+**POST -> add a new comment to comments table ||
+data to send -> [{"description":"", "post_id":"", "user_id":""}]**
 
-DELETE -> delete a row in comments table (user type of 1 is an admin account)
-data to send -> [{"comment_id":51, "user_id":"1", "user_type":"1"}]
+**EDIT -> update a row in comments table ||
+data to send -> [{"description":"", "comment_id":"", "user_id":""}]**
 
-/forum_vote
-POST -> add a new vote to the table vote has to be either ('downvote' or 'upvote')
-data to send -> [{"post_id":"", "vote":""}]
+**DELETE -> delete a row in comments table (user type of 1 is an admin account) ||
+data to send -> [{"comment_id":51, "user_id":"1", "user_type":"1"}]**
 
-/guides_links
-GET -> return all resources from resource table
-POST -> add a resource to the tables (need an admin user type of 1)
-data to send -> [{"resource_description":"","resource_link":"","category_name":"","user_type":"1"}]
+**/forum_vote ||
+POST -> add a new vote to the table vote has to be either ('downvote' or 'upvote') ||
+data to send -> [{"post_id":"", "vote":""}]**
 
-/add_click
-POST -> increment click counter for guide links
-data to send -> [{"resource_id": "1"}]
+**/guides_links**
+
+**GET -> return all resources from resource table**
+
+**POST -> add a resource to the tables (need an admin user type of 1) ||
+data to send -> [{"resource_description":"","resource_link":"","category_name":"","user_type":"1"}]**
+
+**/add_click**
+
+**POST -> increment click counter for guide links ||
+data to send -> [{"resource_id": "1"}]**
 
 ## Tables created and used in elephantsql:
 
