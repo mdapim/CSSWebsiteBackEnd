@@ -1,11 +1,11 @@
-### CSSWebsiteBackEnd
+# CSSWebsiteBackEnd
 
-## Introduction to the BackEnd
+# Introduction to the BackEnd
 The BackEnd for Style Studios uses Flask to create API's to communicate with a Hosted postgresql server on elephantSQL. The user information, forum posts, sessions and guide links are stored on the database in tables. The server is then hosted using Railway for automatic deployment when any changes are pushed to main.
 
 CheckOut Live running server: https://csswebsitebackend-production.up.railway.app
 
-#API EndPoints:
+## API EndPoints:
 
 /create_user
 POST -> create new user in the user_tables
@@ -58,7 +58,7 @@ data to send -> [{"resource_description":"","resource_link":"","category_name":"
 POST -> increment click counter for guide links
 data to send -> [{"resource_id": "1"}]
 
-Tables created and used in elephantsql:
+## Tables created and used in elephantsql:
 
 - categories (store categories for resources)
 - comments (store comments)
@@ -69,34 +69,34 @@ Tables created and used in elephantsql:
 - user_table (store user data )
 - user_types (store user types)
 
-##Flask
+# Flask
 Flask is a micro web framework written in Python. It is classified as a micro-framework because it does not require particular tools or libraries.[2] It has no database abstraction layer, form validation, or any other components where pre-existing third-party libraries provide common functions.
 
-#Features:
+## Features:
 
 - Development Sever and Debugger
 - Integrated support for unit testing
 - Supports for secure cookies
 - complete documentation
 
-##Elephant SQL
+# Elephant SQL
 ElephantSQL is a PostgreSQL database hosting service.
 
-#Features:
+## Features:
 
 - Manage administrative tasks of Postgresql (installation and upgrades)
 - integrated with several cloud application platforms
 
-##Railway:
+# Railway:
 Railway is an infrastructure platform where you can provision infrastructure, develop with that infrastructure locally, and then deploy to the cloud.
 
-#Features:
+## Features:
 
 - Automated deployment
 - Secrets management
 - Railway command line interface, allows you to connect from any terminal in the world
 
-##Installation and Running the Code
+# Installation and Running the Code
 
 Download/clone project repository to your local directory:
 git clone https://github.com/mdapim/CSSWebsiteBackEnd.git
@@ -125,15 +125,15 @@ navigate to test folders and type the command
 pytest test_user_accounts.py
 pytest test_forums.py
 
-##Documentation
+# Documentation
 
-#BackEnd Technologies:
+## BackEnd Technologies:
 
 - Flask
 - Postgresql version 13.9
 - ElephantSQL (Hosting Database)
 
-#Testing:
+## Testing:
 
 - Pytest
 
