@@ -7,17 +7,19 @@ CheckOut Live running server: https://csswebsitebackend-production.up.railway.ap
 
 ## API EndPoints:
 
-**/create_user ||
-POST -> create new user in the user_tables ||
+**/create_user**
+
+**POST -> create new user in the user_tables ||
 data to send -> [{"name": " ", "password":" "}]**
 
-**/find_user ||
-POST = -> find the user from the user_tables ||
+**/find_user**
+
+**POST = -> find the user from the user_tables ||
 data to send -> [{"name": " ", "password":" "}]**
 
 **/forum_post**
 
-GET -> gets all forum post**
+**GET -> gets all forum post**
 
 **POST -> add a new post to posts table ||
 data to send -> [{"title":" ", "description":" ", "user_id":" ", "code":" ", "category":" "}]**
