@@ -7,9 +7,9 @@ CheckOut Live running server: https://csswebsitebackend-production.up.railway.ap
 
 ## API EndPoints:
 
-/create_user
+**/create_user
 POST -> create new user in the user_tables
-data to send -> [{"name": " ", "password":" "}]
+data to send -> [{"name": " ", "password":" "}]**
 
 /find_user
 POST = -> find the user from the user_tables
