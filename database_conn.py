@@ -3,7 +3,7 @@ import psycopg2.extras
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv() #load variables saved in .env
 PASS = os.getenv('PASS')
 HOST = os.getenv('HOST')
 USER = os.getenv('USER')

@@ -47,7 +47,7 @@ def test_item_post(): #will fail without a user existing of id=1
     assert response.status_code==200
     assert response.json()[0]['?column?'].startswith('success')
 
-def test_item_post_no_user():
+def test_item_post_no_user(): 
     item_to_post = json.dumps([{'title':'TESTING_BACKEND','description':'TEST_DESCRIP.'}])
     response = requests.post(base_url+'/forum_post',
         item_to_post,
