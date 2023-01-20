@@ -1,6 +1,6 @@
 ### CSSWebsiteBackEnd
 
-##Introduction to the BackEnd
+## Introduction to the BackEnd
 The BackEnd for Style Studios uses Flask to create API's to communicate with a Hosted postgresql server on elephantSQL. The user information, forum posts, sessions and guide links are stored on the database in tables. The server is then hosted using Railway for automatic deployment when any changes are pushed to main.
 
 CheckOut Live running server: https://csswebsitebackend-production.up.railway.app
